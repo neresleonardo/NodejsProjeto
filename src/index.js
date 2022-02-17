@@ -83,7 +83,7 @@ app.post("/deposit", verifyExistsAccountCPF, (req,res) => {
     const statementOperations = {
         description,
         amount,
-        createdAt: new Date(),
+        created_at: new Date(),
         type: "credit"
     }
 
@@ -113,7 +113,25 @@ app.post("/withdrawal",verifyExistsAccountCPF, (req,res) => {
 
         return res.status(201).send()
 })
+//List bank statement by date
+app.get("/statement/date", verifyExistsAccountCPF, (req,res) => {
 
+    const { customer } = req;
+    const { date } = req.query;
+
+    // Formatação
+    const dateFormat = new Date(date + "00:00");
+
+    const statement = customer.statement.filter(
+    (statement) =>
+     statement.created_at.toDateString() === 
+     new Date(dateFormat).toDateString()
+     );
+
+    return res.json(statement);
+});
+
+// Porta
 app.listen(3333, () => {
    console.log( "Correndo em 3333");
 })
