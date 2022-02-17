@@ -130,7 +130,7 @@ app.get("/statement/date", verifyExistsAccountCPF, (req,res) => {
 
     return res.json(statement);
 });
-
+// update account - name
 app.put("/account", verifyExistsAccountCPF, (req, res) => {
     const { name } = req.body;
     const { customer } = req;
@@ -139,12 +139,32 @@ app.put("/account", verifyExistsAccountCPF, (req, res) => {
 
     return res.status(201).send();
 })
-
+// status account
 app.get("/account", verifyExistsAccountCPF, (req,res) => {
     const { customer } = req;
-    
+
     return res.json(customer);
 } )
+// Delete accont
+app.delete("/account", verifyExistsAccountCPF, (req,res) => {
+    const { customer } = req;
+
+    //splice
+
+    customers.splice(customer, 1);
+
+    return res.status(200).json(customers);
+}) 
+// Status Balance
+app.get("/balance", verifyExistsAccountCPF, (req,res) => {
+    const { customer } = req;
+    const balance = getBalance(customer.statement);
+
+    return res.json(balance);
+})
+
+
+
 
 // Porta
 app.listen(3333, () => {
