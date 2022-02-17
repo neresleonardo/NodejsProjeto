@@ -19,12 +19,19 @@ const customers = [];
 
 app.post("/account", (req, res) => {
     const { cpf, name } = req.body;
-    const id = uuidv4();
+
+    const customerAlreadyExists = customers.some(
+    (customer) => customer.cpf === cpf ); //Busca
+
+    if(customerAlreadyExists){
+        return res.status(400).json({ message: "Custome already exists!"})
+        // Se existir um cpf ele já retorna um error 404 - Https
+    }
 
     customers.push({
         cpf,
         name,
-        id,
+        id:uuidv4(), //uuid
         statement: []
     });
 
