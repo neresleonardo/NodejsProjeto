@@ -6,6 +6,7 @@ const { v4: uuidv4 } = require("uuid"); // v4 números rendon
 
 const app = express();
 
+
 app.use(express.json());
 /**
  * cpf - string 
@@ -17,6 +18,8 @@ app.use(express.json());
 
 const customers = [];
 
+
+// Creating an account and validating the cpf
 app.post("/account", (req, res) => {
     const { cpf, name } = req.body;
 
@@ -36,6 +39,16 @@ app.post("/account", (req, res) => {
     });
 
     return res.status(201).send();  // 201 status de banco criado
+})
+
+// Looking for the customer's bank statement
+app.get("/statement/:cpf", (req,res) => {
+    const { cpf } = req.params;
+
+    const customer = customers.find((customer) => customer.cpf === cpf);
+                    //Procurando se existe um cpf estritamente parecido
+
+    return res.json(customer.statement);
 })
 
 app.listen(3333, () => {
